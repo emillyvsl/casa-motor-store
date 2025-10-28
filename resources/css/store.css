@@ -2,8 +2,10 @@
     --primary: #e5813e;
     --primary-dark: #c96a28;
     --primary-light: #fff3e8;
+    --bg-dark: #222;
     --text-dark: #222;
     --text-light: #666;
+    --text-nav: #ffffff;
     --light: #ffffff;
     --gray-light: #f5f5f5;
     --gray: #e0e0e0;
@@ -22,7 +24,7 @@
   body {
     font-family: 'Inter', sans-serif;
     background: #f9f9f9;
-    color: var(--text-dark);
+    color: var(--bg-dark);
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
@@ -31,7 +33,7 @@
 
   /* HEADER */
   .header {
-    background: var(--light);
+    background: var(--text-dark);
     border-bottom: 3px solid var(--primary);
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     padding: 0.6rem 0;
@@ -70,7 +72,7 @@
   }
 
   .nav-link {
-    color: var(--text-dark);
+    color: var(--text-nav);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -490,12 +492,12 @@
       top: 100%;
       left: 0;
       width: 100%;
-      background: var(--light);
+      background: var(--bg-dark);
       flex-direction: column;
       align-items: stretch;
       gap: 0;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      border-top: 1px solid var(--gray);
+      border-top: 1px solid var(--bg-dark);;
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease, padding 0.3s ease;
@@ -509,7 +511,7 @@
     .nav-link {
       display: block;
       padding: 0.75rem 1.5rem;
-      border-bottom: 1px solid var(--gray-light);
+      /* border-bottom: 1px solid var(--bg-dark); */
       text-align: left;
     }
 

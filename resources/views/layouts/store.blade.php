@@ -12,15 +12,12 @@
 
 </head>
 <body>
-  <!-- HEADER -->
   <header class="header">
     <nav class="nav">
-      <!-- LOGO -->
       <a href="/" class="logo">
-        <img src="/img/logo.png" alt="Casa dos Motores">
+        <img src="/img/logo-branco.png" alt="Casa dos Motores">
       </a>
 
-      <!-- LINKS -->
       <div class="nav-center">
         <a href="/" class="nav-link active">Início</a>
         <a href="/produtos" class="nav-link">Produtos</a>
@@ -29,7 +26,6 @@
         <a href="/contato" class="nav-link">Contato</a>
       </div>
 
-      <!-- ÍCONES -->
       <div class="nav-icons">
         <i class="fas fa-search nav-icon"></i>
         <i class="fas fa-shopping-cart nav-icon">
