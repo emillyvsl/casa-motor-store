@@ -14,13 +14,13 @@
 
         {{-- Card de login --}}
         <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-            <!-- Session Status -->
+            <!-- Status da Sessão -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 
             <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">
                 @csrf
 
-                <!-- Email Address -->
+                <!-- E-mail -->
                 <div>
                     <x-input-label for="email" :value="__('E-mail')" />
                     <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
@@ -28,7 +28,7 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
-                <!-- Password -->
+                <!-- Senha -->
                 <div>
                     <x-input-label for="password" :value="__('Senha')" />
                     <x-text-input id="password" class="block mt-1 w-full"
@@ -36,17 +36,17 @@
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
-                <!-- Remember Me -->
+                <!-- Lembrar-me / Esqueceu a senha -->
                 <div class="flex items-center justify-between mt-4">
                     <label for="remember_me" class="inline-flex items-center">
                         <input id="remember_me" type="checkbox"
-                            class="rounded border-gray-300 text-primary-orange shadow-sm focus:ring-primary-orange"
+                            class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-600"
                             name="remember">
                         <span class="ms-2 text-sm text-gray-600">Lembrar-me</span>
                     </label>
 
                     @if (Route::has('password.request'))
-                        <a class="text-sm text-primary-orange hover:underline"
+                        <a class="text-sm text-orange-600 hover:underline"
                            href="{{ route('password.request') }}">
                             Esqueceu a senha?
                         </a>
@@ -55,14 +55,14 @@
 
                 <!-- Botão de Login -->
                 <div class="mt-6">
-                    <x-primary-button class="w-full justify-center bg-primary-orange hover:bg-orange-600">
+                    <x-primary-button class="w-full justify-center bg-orange-600 hover:bg-orange-800">
                         Entrar
                     </x-primary-button>
                 </div>
             </form>
         </div>
 
-        {{-- Rodapé opcional --}}
+        {{-- Rodapé --}}
         <p class="mt-8 text-xs text-gray-400 text-center">
             © {{ date('Y') }} Casa dos Motores — Acesso restrito à administração
         </p>
