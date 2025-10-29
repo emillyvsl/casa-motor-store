@@ -31,16 +31,22 @@ class Products extends Model
         'is_active' => 'boolean',
     ];
 
-    // Relationships
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function shippingProfile()
+    public function shippingProfiles()
     {
-        return $this->belongsTo(ShippingProfile::class);
+        return $this->belongsToMany(
+            ShippingProfile::class,
+            'product_shipping_profile',
+            'product_id',      // chave local correta
+            'shipping_profile_id' // chave relacionada correta
+        );
     }
+
+
 
     public function images()
     {

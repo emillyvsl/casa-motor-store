@@ -15,6 +15,15 @@
                <span class="ms-3">Dashboard</span>
            </a>
        </li>
+
+       <li>
+        <a href="{{ route('admin.products.index') }}"
+           class="flex items-center p-2 rounded-lg transition duration-150
+                  {{ request()->routeIs('admin.products.*') ? 'bg-orange-100 text-white dark:bg-orange-600' : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700' }}">
+                  <i class="fas fa-tachometer-alt w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>            <span class="ms-3">Produtos</span>
+        </a>
+    </li>
+    
        
       
    </ul>

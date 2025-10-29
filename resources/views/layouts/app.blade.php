@@ -15,25 +15,28 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 
-  <body class="font-sans antialiased bg-gray-50">
+  <body class="font-sans antialiased bg-gray-50 min-h-screen overflow-y-auto">
     <div x-data="{ asideOpen: window.innerWidth >= 1024 }"
          @toggle-sidebar.window="asideOpen = !asideOpen"
          @resize.window="asideOpen = window.innerWidth >= 1024"
-         class="flex flex-col h-screen overflow-hidden">
-
+         class="flex flex-col min-h-screen overflow-y-auto">
+  
       {{-- Navbar --}}
       @include('layouts.components.navbar')
-
+  
       <div class="flex flex-1 pt-16">
         {{-- Sidebar --}}
         @include('layouts.components.sidebar')
-
+  
         {{-- Conteúdo principal --}}
-        <main class="flex-1 transition-all duration-300 ease-in-out p-6"
+        <main class="flex-1 transition-all duration-300 ease-in-out p-6 overflow-y-auto"
               :class="{ 'ml-64': asideOpen, 'ml-0': !asideOpen }">
           {{ $slot }}
         </main>
       </div>
     </div>
+    @stack('modals')
+    @stack('scripts')
   </body>
+  
 </html>

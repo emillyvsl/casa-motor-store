@@ -18,6 +18,6 @@ class ShippingProfile extends Model
 
     public function products()
     {
-        return $this->hasMany(Products::class);
+        return $this->belongsToMany(Products::class, 'product_shipping_profile');
     }
 }
