@@ -149,7 +149,7 @@
 </section>
 
 
-<section class="py-16 bg-gray-900 text-white">
+<section class="py-16 bg-[#000020] text-white">
     <div class="container mx-auto px-6">
         <div class="text-center mb-12">
             <h2 class="text-4xl md:text-5xl font-bold mb-4 text-orange-600">

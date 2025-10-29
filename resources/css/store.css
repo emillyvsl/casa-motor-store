@@ -1,5 +1,5 @@
 :root {
-    --primary: #e5813e;
+    --primary: oklch(64.6% 0.222 41.116);
     --primary-dark: #c96a28;
     --primary-light: #fff3e8;
     --bg-dark: #222;
