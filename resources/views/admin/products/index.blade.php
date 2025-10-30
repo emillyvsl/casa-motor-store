@@ -102,23 +102,44 @@
 
             </div>
 
-            @if (session('success'))
-                <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-lg shadow-sm">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm text-green-700 font-medium">
-                                {{ session('success') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            @if (session('success') || session('error'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        @if (session('success'))
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'success',
+                                title: "{{ session('success') }}",
+                                showConfirmButton: false,
+                                timer: 2500,
+                                timerProgressBar: true,
+                                background: '#10B981',
+                                color: '#fff',
+                                customClass: {
+                                    popup: 'rounded-xl shadow-lg'
+                                }
+                            });
+                        @endif
+
+                        @if (session('error'))
+                            Swal.fire({
+                                toast: true,
+                                position: 'top-end',
+                                icon: 'error',
+                                title: "{{ session('error') }}",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                background: '#EF4444',
+                                color: '#fff',
+                                customClass: {
+                                    popup: 'rounded-xl shadow-lg'
+                                }
+                            });
+                        @endif
+                    });
+                </script>
             @endif
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

@@ -8,7 +8,6 @@ use App\Models\Products;
 use App\Models\ShippingProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -66,11 +65,14 @@ class ProductController extends Controller
             $product->shippingProfiles()->sync($shippingProfiles);
         }
 
+        // 📸 Salvar imagens diretamente em public/products/
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
-                $path = $file->store('products', 'public');
+                $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('products'), $filename);
+
                 $product->images()->create([
-                    'path' => $path,
+                    'path' => 'products/' . $filename,
                     'is_main' => $index === 0,
                 ]);
             }
@@ -85,6 +87,7 @@ class ProductController extends Controller
         $shippingProfiles = ShippingProfile::where('is_active', true)->get();
 
         $product->load(['images', 'shippingProfiles']);
+        
 
         return view('admin.products.edit', compact('product', 'categories', 'shippingProfiles'));
     }
@@ -109,14 +112,16 @@ class ProductController extends Controller
         $validated['is_featured'] = $request->has('is_featured');
 
         $product->update($validated);
-
         $product->shippingProfiles()->sync($request->shipping_profiles ?? []);
 
+        // 📸 Atualizar imagens
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
-                $path = $file->store('products', 'public');
+                $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('products'), $filename);
+
                 $product->images()->create([
-                    'path' => $path,
+                    'path' => 'products/' . $filename,
                     'is_main' => false,
                 ]);
             }
@@ -128,7 +133,10 @@ class ProductController extends Controller
     public function destroy(Products $product)
     {
         foreach ($product->images as $image) {
-            Storage::disk('public')->delete($image->path);
+            $imagePath = public_path($image->path);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         $product->shippingProfiles()->detach();

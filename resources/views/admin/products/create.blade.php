@@ -31,7 +31,7 @@
     @endif
 
     <div class="py-8">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class=" mx-auto sm:px-6 lg:px-8">
             <!-- Progress Indicator -->
             <div class="mb-8">
                 <div class="flex items-center justify-center space-x-4">
@@ -675,16 +675,16 @@
                     row.innerHTML = `
         <div class="flex-1">
             <label class="block text-xs font-medium text-gray-700 mb-1">Nome do Atributo</label>
-            <input type="text" 
-                class="attr-key w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 text-sm placeholder-gray-400" 
-                placeholder="Ex: Cor, Tamanho, Material..." 
+            <input type="text"
+                class="attr-key w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 text-sm placeholder-gray-400"
+                placeholder="Ex: Cor, Tamanho, Material..."
                 value="${key}">
         </div>
         <div class="flex-1">
             <label class="block text-xs font-medium text-gray-700 mb-1">Valor do Atributo</label>
-            <input type="text" 
-                class="attr-value w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 text-sm placeholder-gray-400" 
-                placeholder="Ex: Vermelho, Grande, Alumínio..." 
+            <input type="text"
+                class="attr-value w-full px-3 py-2.5 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 text-sm placeholder-gray-400"
+                placeholder="Ex: Vermelho, Grande, Alumínio..."
                 value="${value}">
         </div>
         <div class="pt-6">
