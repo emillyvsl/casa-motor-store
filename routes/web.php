@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\CustomerAuthController;
 use App\Http\Controllers\Auth\CustomerGoogleAuthController;
+use App\Http\Controllers\site\ProductController as SiteProductController;
 use App\Http\Controllers\site\ProfileController as SiteProfileController;
 
 /*
@@ -15,7 +16,10 @@ use App\Http\Controllers\site\ProfileController as SiteProfileController;
 
 Route::name('site.')->group(function () {
     Route::get('/', fn() => view('site.home'))->name('home');
-    Route::get('/produtos', fn() => view('site.product'))->name('products');
+    Route::get('/produtos', [SiteProductController::class, 'index'])->name('products');
+    Route::get('/produtos/{slug}', [SiteProductController::class, 'show'])->name('products.show');
+    Route::post('/produtos/{product}/avaliar', [SiteProductController::class, 'review'])
+    ->name('products.review');
     Route::get('/carrinho', fn() => view('site.cart'))->name('cart');
 });
 

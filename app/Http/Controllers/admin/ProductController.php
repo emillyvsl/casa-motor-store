@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Products;
 use App\Models\ShippingProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -65,14 +66,21 @@ class ProductController extends Controller
             $product->shippingProfiles()->sync($shippingProfiles);
         }
 
-        // 📸 Salvar imagens diretamente em public/products/
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('products'), $filename);
+
+                $storagePath = storage_path('app/public/products');
+                if (!is_dir($storagePath)) {
+                    mkdir($storagePath, 0755, true);
+                }
+
+                $file->move($storagePath, $filename);
+
+                $relativePath = 'products/' . $filename;
 
                 $product->images()->create([
-                    'path' => 'products/' . $filename,
+                    'path' => $relativePath,
                     'is_main' => $index === 0,
                 ]);
             }
@@ -81,19 +89,25 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Produto criado com sucesso!');
     }
 
+
     public function edit(Products $product)
     {
         $categories = Category::orderBy('name')->get();
         $shippingProfiles = ShippingProfile::where('is_active', true)->get();
 
         $product->load(['images', 'shippingProfiles']);
-        
 
         return view('admin.products.edit', compact('product', 'categories', 'shippingProfiles'));
     }
 
     public function update(Request $request, Products $product)
     {
+        if ($request->filled('shipping_profiles') && is_string($request->shipping_profiles)) {
+            $request->merge([
+                'shipping_profiles' => explode(',', $request->shipping_profiles),
+            ]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|unique:products,slug,' . $product->id,
@@ -105,37 +119,77 @@ class ProductController extends Controller
             'images.*' => 'nullable|image|max:2048',
             'shipping_profiles' => 'array',
             'shipping_profiles.*' => 'exists:shipping_profiles,id',
+            'removed_images' => 'sometimes|array',
+            'removed_images.*' => 'integer',
         ]);
 
-        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
+        $validated['slug'] = $validated['slug'] ?? \Illuminate\Support\Str::slug($validated['name']);
         $validated['is_active'] = $request->has('is_active');
         $validated['is_featured'] = $request->has('is_featured');
 
         $product->update($validated);
-        $product->shippingProfiles()->sync($request->shipping_profiles ?? []);
+        $product->shippingProfiles()->sync($validated['shipping_profiles'] ?? []);
 
-        // 📸 Atualizar imagens
+        $removedIds = $request->input('removed_images', []);
+        if (is_string($removedIds)) {
+            $removedIds = array_filter(array_map('intval', explode(',', $removedIds)));
+        }
+
+        if (is_array($removedIds) && !empty($removedIds)) {
+            $imagesToRemove = $product->images()->whereIn('id', $removedIds)->get();
+
+            foreach ($imagesToRemove as $img) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($img->path);
+
+                $legacy = public_path($img->path);
+                if (is_file($legacy)) {
+                    @unlink($legacy);
+                }
+
+                $img->delete();
+            }
+        }
+
         if ($request->hasFile('images')) {
+            $storagePath = storage_path('app/public/products');
+            if (!is_dir($storagePath)) {
+                @mkdir($storagePath, 0755, true);
+            }
+
+            $noImagesLeft = !$product->images()->exists();
+
             foreach ($request->file('images') as $index => $file) {
-                $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('products'), $filename);
+                $filename = time() . '_' . \Illuminate\Support\Str::random(10) . '.' . $file->getClientOriginalExtension();
+                $file->move($storagePath, $filename);
+
+                $relativePath = 'products/' . $filename;
 
                 $product->images()->create([
-                    'path' => 'products/' . $filename,
-                    'is_main' => false,
+                    'path'    => $relativePath,
+                    'is_main' => $noImagesLeft && $index === 0,
                 ]);
             }
         }
 
-        return redirect()->route('admin.products.index')->with('success', 'Produto atualizado com sucesso!');
+        $hasMain = $product->images()->where('is_main', true)->exists();
+        if (!$hasMain) {
+            $first = $product->images()->first();
+            if ($first) {
+                $first->update(['is_main' => true]);
+            }
+        }
+
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', 'Produto atualizado com sucesso!');
     }
+
 
     public function destroy(Products $product)
     {
         foreach ($product->images as $image) {
-            $imagePath = public_path($image->path);
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
             }
         }
 

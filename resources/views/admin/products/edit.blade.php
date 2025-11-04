@@ -1,23 +1,22 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-bold text-2xl text-gray-900 leading-tight">
-                    {{ __('Editar Produto') }}
-                </h2>
-                <p class="text-sm text-gray-500 mt-1">Atualize as informações do produto</p>
-            </div>
+    <x-header title="Editar Produto" subtitle="Atualize as informações do produto" gradient="from-orange-500 to-amber-500">
+        <x-slot name="iconSlot">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+        </x-slot>
 
-            <a href="{{ route('admin.products.index') }}"
-                class="inline-flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 transition-all duration-200 hover:shadow-md">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Voltar
-            </a>
-        </div>
-    </x-slot>
+        <a href="{{ route('admin.products.index') }}"
+            class="inline-flex items-center px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-medium text-sm text-gray-700 shadow-sm hover:bg-gray-50 transition-all duration-200 hover:shadow-md">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Voltar
+        </a>
+    </x-header>
+
 
     @if ($errors->any())
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 m-4 rounded-md" tipo_usuario="alert">
@@ -31,7 +30,7 @@
     @endif
 
     <div class="py-8">
-        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+        <div class=" mx-auto sm:px-6 lg:px-8">
             <!-- Progress Indicator -->
             <div class="mb-8">
                 <div class="flex items-center justify-center space-x-4">
@@ -53,8 +52,8 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data"
-                    class="divide-y divide-gray-100" id="productForm">
+                <form action="{{ route('admin.products.update', $product->id) }}" method="POST"
+                    enctype="multipart/form-data" class="divide-y divide-gray-100" id="productForm">
                     @csrf
                     @method('PUT')
 
@@ -77,36 +76,35 @@
                             </div>
 
                             <div class="space-y-6">
-                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <!-- Nome -->
-                                    <div class="lg:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-900 mb-2">
-                                            Nome do Produto <span class="text-red-500">*</span>
-                                        </label>
-                                        <div class="relative">
-                                            <input type="text" name="name" value="{{ old('name', $product->name) }}"
-                                                class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 placeholder-gray-400"
-                                                placeholder="Ex: Motor Elétrico Trifásico 10CV" required>
-                                            <div class="absolute right-3 top-3.5">
-                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                            </div>
+                                <div class="lg:col-span-2">
+                                    <label class="block text-sm font-semibold text-gray-900 mb-2">
+                                        Nome do Produto <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" name="name" value="{{ old('name', $product->name) }}"
+                                            class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 placeholder-gray-400"
+                                            placeholder="Ex: Motor Elétrico Trifásico 10CV" required>
+                                        <div class="absolute right-3 top-3.5">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                            </svg>
                                         </div>
-                                        @error('name')
-                                            <span class="text-sm text-red-600 mt-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd"
-                                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
                                     </div>
+                                    @error('name')
+                                        <span class="text-sm text-red-600 mt-2 flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            {{ $message }}
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
 
                                     <!-- SKU -->
                                     <div>
@@ -115,10 +113,6 @@
                                             class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 placeholder-gray-400 font-mono text-sm"
                                             placeholder="Ex: PRO-10CV-TRI">
                                     </div>
-                                </div>
-
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <!-- Categoria -->
                                     <div>
                                         <label class="block text-sm font-semibold text-gray-900 mb-2">Categoria</label>
                                         <div class="relative">
@@ -134,6 +128,11 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+                                    <!-- Categoria -->
+
 
                                     <!-- Tipos de Envio -->
                                     <div>
@@ -143,7 +142,10 @@
                                             class="flex flex-wrap gap-2 border border-gray-200 rounded-xl p-3 bg-white shadow-sm min-h-[56px] transition-all duration-200">
                                             @foreach ($shippingProfiles as $profile)
                                                 @php
-                                                    $isSelected = in_array($profile->id, $product->shippingProfiles->pluck('id')->toArray());
+                                                    $isSelected = in_array(
+                                                        $profile->id,
+                                                        $product->shippingProfiles->pluck('id')->toArray(),
+                                                    );
                                                 @endphp
                                                 <button type="button" data-id="{{ $profile->id }}"
                                                     class="shipping-tag px-4 py-2 rounded-full border text-sm transition-all duration-200 {{ $isSelected ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white border-transparent' : 'border-gray-300 text-gray-700 bg-gray-50 hover:bg-orange-50 hover:border-orange-400' }}">
@@ -245,7 +247,8 @@
                                     <div>
                                         <label class="block text-sm font-semibold text-gray-900 mb-2">Estoque
                                             Atual</label>
-                                        <input type="number" name="stock" value="{{ old('stock', $product->stock) }}"
+                                        <input type="number" name="stock"
+                                            value="{{ old('stock', $product->stock) }}"
                                             class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200">
                                     </div>
                                 </div>
@@ -283,15 +286,19 @@
                                         </div>
 
                                         @php
-                                        $attributesData = old('attributes', $product->attributes ?? '{}');
+                                            $attributesData = old('attributes', $product->attributes ?? '{}');
 
-                                        // se vier array, transforma em JSON
-                                        if (is_array($attributesData)) {
-                                            $attributesData = json_encode($attributesData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                                        }
-                                    @endphp
+                                            // se vier array, transforma em JSON
+                                            if (is_array($attributesData)) {
+                                                $attributesData = json_encode(
+                                                    $attributesData,
+                                                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+                                                );
+                                            }
+                                        @endphp
 
-                                    <input type="hidden" name="attributes" id="attributesJson" value='{{ $attributesData }}'>
+                                        <input type="hidden" name="attributes" id="attributesJson"
+                                            value='{{ $attributesData }}'>
 
 
                                         <p class="text-xs text-gray-500 mt-3">
@@ -381,17 +388,11 @@
                                     class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-100">
                                     <label class="flex items-center cursor-pointer">
                                         <input type="checkbox" name="allow_out_of_stock_sales"
+                                            class="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg mr-4 flex items-center justify-center peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-amber-500 peer-checked:border-transparent transition-all duration-200"
                                             id="allow_out_of_stock_sales"
                                             {{ old('allow_out_of_stock_sales', $product->allow_out_of_stock_sales) ? 'checked' : '' }}
                                             class="sr-only peer">
-                                        <div
-                                            class="w-6 h-6 bg-white border-2 border-gray-300 rounded-lg mr-4 flex items-center justify-center peer-checked:bg-gradient-to-r peer-checked:from-orange-500 peer-checked:to-amber-500 peer-checked:border-transparent transition-all duration-200">
-                                            <svg class="w-3 h-3 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200"
-                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                                    d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </div>
+
                                         <div>
                                             <span class="block text-lg font-bold text-gray-900">Permitir Venda Sem
                                                 Estoque</span>
@@ -528,28 +529,37 @@
                                         Produto</label>
 
                                     <!-- Imagens Existentes -->
-                                    @if($product->images && $product->images->count() > 0)
-                                    <div class="mb-6">
-                                        <h4 class="text-sm font-semibold text-gray-900 mb-3">Imagens Atuais</h4>
-                                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                                            @foreach($product->images as $image)
-                                            <div class="relative group">
-                                                <div class="aspect-square rounded-xl border-2 border-gray-200 overflow-hidden">
-                                                    <img src="{{ Storage::disk('public')->url($image->path) }}" class="w-full h-full object-cover">
-                                                </div>
-                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-xl flex items-center justify-center">
-                                                    <button type="button"
-                                                            onclick="removeExistingImage({{ $image->id }})"
-                                                            class="remove-image opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full transition-all duration-200 transform scale-90 group-hover:scale-100">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    </button>
-                                                </div>
+                                    @if ($product->images && $product->images->count() > 0)
+                                        <div class="mb-6">
+                                            <h4 class="text-sm font-semibold text-gray-900 mb-3">Imagens Atuais</h4>
+                                            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                                                @foreach ($product->images as $image)
+                                                    <div class="relative group">
+                                                        <div
+                                                            class="aspect-square rounded-xl border-2 border-gray-200 overflow-hidden">
+                                                            <img src="{{ asset('storage/' . $image->path) }}"
+                                                                class="w-full h-full object-cover">
+
+                                                        </div>
+                                                        <div
+                                                            class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-xl flex items-center justify-center">
+                                                            <button type="button"
+                                                                onclick="removeExistingImage({{ $image->id }}, event)"
+                                                                class="remove-image opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full transition-all duration-200 transform scale-90 group-hover:scale-100">
+                                                                <svg class="w-4 h-4" fill="none"
+                                                                    stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round" stroke-width="2"
+                                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                                    </path>
+                                                                </svg>
+                                                            </button>
+
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
-                                            @endforeach
                                         </div>
-                                    </div>
                                     @endif
 
                                     <div
@@ -580,7 +590,8 @@
 
                                 <!-- Preview de Novas Imagens -->
                                 <div id="imagePreview" class="hidden">
-                                    <h4 class="text-sm font-semibold text-gray-900 mb-3">Pré-visualização das Novas Imagens</h4>
+                                    <h4 class="text-sm font-semibold text-gray-900 mb-3">Pré-visualização das Novas
+                                        Imagens</h4>
                                     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
                                         id="previewContainer">
                                         <!-- Preview será inserido aqui via JavaScript -->
@@ -1021,19 +1032,33 @@
             });
 
             // Função para remover imagem existente
-            function removeExistingImage(imageId) {
-                if (confirm('Tem certeza que deseja remover esta imagem?')) {
-                    // Adicionar campo hidden para marcar imagem para remoção
-                    const form = document.getElementById('productForm');
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'removed_images[]';
-                    hiddenInput.value = imageId;
-                    form.appendChild(hiddenInput);
+            function removeExistingImage(imageId, event) {
+                Swal.fire({
+                    title: 'Remover imagem?',
+                    text: 'Tem certeza que deseja remover esta imagem?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e3342f',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sim, remover',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Adiciona campo hidden no form para enviar a imagem como removida
+                        const form = document.getElementById('productForm');
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'removed_images[]';
+                        hiddenInput.value = imageId;
+                        form.appendChild(hiddenInput);
 
-                    // Remover visualmente a imagem
-                    event.target.closest('.relative').remove();
-                }
+                        // Remove visualmente o bloco da imagem
+                        const imageContainer = event.target.closest('.relative');
+                        if (imageContainer) {
+                            imageContainer.remove();
+                        }
+                    }
+                });
             }
         </script>
     @endpush

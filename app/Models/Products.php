@@ -22,6 +22,8 @@ class Products extends Model
         'attributes',
         'discount_price',
         'is_active',
+        'backorder_delivery_days',
+        'out_of_stock_message',
     ];
 
     protected $casts = [
@@ -55,7 +57,7 @@ class Products extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Reviews::class);
+        return $this->hasMany(Reviews::class, 'product_id');
     }
 
     public function orderItems()

@@ -27,6 +27,9 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);
             $table->json('attributes')->nullable();
             $table->decimal('discount_price', 10, 2)->nullable();
+            $table->integer('backorder_delivery_days')->nullable()->default(0);
+            $table->string('out_of_stock_message')->nullable();
+
             $table->boolean('is_active')->default(true);
 
             $table->timestamps();
