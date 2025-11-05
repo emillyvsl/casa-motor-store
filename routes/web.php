@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -19,7 +20,7 @@ Route::name('site.')->group(function () {
     Route::get('/produtos', [SiteProductController::class, 'index'])->name('products');
     Route::get('/produtos/{slug}', [SiteProductController::class, 'show'])->name('products.show');
     Route::post('/produtos/{product}/avaliar', [SiteProductController::class, 'review'])
-    ->name('products.review');
+        ->name('products.review');
     Route::get('/carrinho', fn() => view('site.cart'))->name('cart');
 });
 
@@ -61,8 +62,7 @@ Route::prefix('admin')
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::resource('products', ProductController::class)->names('admin.products');
-        
-
+        Route::resource('categories', CategoryController::class)->names('admin.categories');
     });
 
 

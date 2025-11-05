@@ -496,7 +496,7 @@
                                     Escrever Avaliação
                                 </button>
                             @else
-                                <a href="{{ route('login') }}"
+                                <a href="{{ route('customer.login') }}"
                                     class="mt-6 w-full inline-block text-center bg-gray-200 text-gray-700 font-semibold py-3 px-4 rounded-xl hover:bg-gray-300 transition-colors duration-200">
                                     Faça login para avaliar
                                 </a>
