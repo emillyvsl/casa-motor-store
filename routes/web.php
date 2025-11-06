@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ShippingProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\CustomerAuthController;
@@ -63,6 +64,7 @@ Route::prefix('admin')
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::resource('products', ProductController::class)->names('admin.products');
         Route::resource('categories', CategoryController::class)->names('admin.categories');
+        Route::resource('shipping-profiles', ShippingProfileController::class)->names('admin.shipping-profiles');
     });
 
 

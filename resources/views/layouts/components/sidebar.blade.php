@@ -72,7 +72,24 @@
                       <span class="ms-3">Categorias</span>
                   </a>
               </li>
+              <li>
+                  <a href="{{ route('admin.shipping-profiles.index') }}"
+                      class="flex items-center p-2 rounded-lg transition duration-150
+              {{ request()->routeIs('admin.shipping-profiles.*')
+                  ? 'bg-orange-100 text-white dark:bg-orange-600'
+                  : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700' }}">
+                      <i class="w-6 h-6 flex items-center justify-center">
+                        <img 
+                            src="{{ asset('img/box.png') }}" 
+                            alt="Ícone de Caixa" 
+                            class="w-5 h-5 object-contain brightness-0 dark:brightness-200 group-hover:brightness-100 transition duration-200"
+                        >
+                    </i>
+                    
 
+                      <span class="ms-3">Entregas</span>
+                  </a>
+              </li>
 
 
           </ul>
