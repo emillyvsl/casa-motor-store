@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ShippingController;
+use App\Http\Controllers\admin\ShippingOriginController;
 use App\Http\Controllers\admin\ShippingProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -24,6 +26,9 @@ Route::name('site.')->group(function () {
         ->name('products.review');
     Route::get('/carrinho', fn() => view('site.cart'))->name('cart');
 });
+
+Route::post('/api/shipping/quote', [ShippingController::class, 'quote'])
+    ->name('api.shipping.quote');
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +70,8 @@ Route::prefix('admin')
         Route::resource('products', ProductController::class)->names('admin.products');
         Route::resource('categories', CategoryController::class)->names('admin.categories');
         Route::resource('shipping-profiles', ShippingProfileController::class)->names('admin.shipping-profiles');
+        Route::resource('shipping-origins', ShippingOriginController::class)->only(['index','create','store','edit','update','destroy'])->names('admin.shipping-origins');
+
     });
 
 

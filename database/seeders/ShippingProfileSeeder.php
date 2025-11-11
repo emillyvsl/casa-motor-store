@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ShippingOrigin;
 use Illuminate\Database\Seeder;
 use App\Models\ShippingProfile;
 
@@ -9,6 +10,15 @@ class ShippingProfileSeeder extends Seeder
 {
     public function run(): void
     {
+        ShippingOrigin::firstOrCreate(
+            ['name' => 'Matriz Rio Branco'],
+            [
+                'cep' => '69900-000',
+                'address' => 'Rua Exemplo, 123',
+                'city' => 'Rio Branco',
+                'state' => 'AC',
+            ]
+        );
         $profiles = [
             [
                 'name' => 'Entrega Padrão Nacional',

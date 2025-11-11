@@ -482,8 +482,9 @@
                                                     style="width: {{ $ratingStats['total'] > 0 ? ($ratingStats['distribution'][$i] / $ratingStats['total']) * 100 : 0 }}%">
                                                 </div>
                                             </div>
-                                            <span class="w-8 text-gray-600 text-right">{{ $ratingStats['distribution'][$i] }}</span>
-                                            
+                                            <span
+                                                class="w-8 text-gray-600 text-right">{{ $ratingStats['distribution'][$i] }}</span>
+
                                         </div>
                                     @endfor
                                 </div>
@@ -553,6 +554,110 @@
                     </div>
                 </div>
             </div>
+            <div class="mt-6">
+                <label class="block text-sm font-medium text-gray-700">Calcular frete</label>
+                <div class="flex gap-2">
+                    <input id="cep" type="text" placeholder="Digite seu CEP" maxlength="9"
+                        class="border rounded-lg px-3 py-2 w-1/2 focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                    <button onclick="calcularFrete()"
+                        class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition">
+                        Calcular
+                    </button>
+                </div>
+
+                <div id="frete-opcoes" class="mt-4"></div>
+            </div>
+
+            <script>
+                async function calcularFrete() {
+                    const cep = document.getElementById('cep').value.trim();
+                    const div = document.getElementById('frete-opcoes');
+
+                    if (!cep) {
+                        div.innerHTML = `<p class="text-sm text-red-600 mt-2">Por favor, insira um CEP válido.</p>`;
+                        return;
+                    }
+
+                    div.innerHTML = `<p class="text-gray-500 text-sm mt-2">🔄 Calculando frete...</p>`;
+
+                    try {
+                        const res = await fetch('{{ route('api.shipping.quote') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                cep_destino: cep,
+                                products: [{
+                                    id: '{{ $product->id }}',
+                                    width: {{ $product->width ?? 20 }},
+                                    height: {{ $product->height ?? 20 }},
+                                    length: {{ $product->length ?? 30 }},
+                                    weight: {{ $product->weight ?? 1 }},
+                                    insurance_value: {{ $product->discount_price ?? $product->price }},
+                                    quantity: 1
+                                }]
+                            })
+                        });
+
+                        const data = await res.json();
+
+                        // Verifica se há resultados
+                        if (!Array.isArray(data) || data.length === 0) {
+                            div.innerHTML =
+                                `<p class="text-sm text-red-600 mt-2">Nenhum serviço disponível para o CEP informado.</p>`;
+                            return;
+                        }
+
+                        // Filtra e organiza os serviços
+                        const validos = data.filter(f => !f.error && f.price);
+                        const erros = data.filter(f => f.error);
+
+                        // Mostra serviços disponíveis
+                        let html = '';
+
+                        if (validos.length > 0) {
+                            html += validos.map(frete => `
+                      <div class="flex justify-between items-center border rounded-lg p-3 mb-2 bg-white shadow-sm">
+                        <div class="flex items-center gap-3">
+                          <img src="${frete.company?.picture || ''}" alt="${frete.company?.name || ''}" class="w-10 h-10 rounded">
+                          <div>
+                            <p class="text-sm font-semibold text-gray-900">${frete.company?.name || 'Transportadora'} - ${frete.name}</p>
+                            <p class="text-xs text-gray-500">
+                              Entrega em ${frete.delivery_time || frete.custom_delivery_time || '-'} dia(s) útil(eis)
+                            </p>
+                          </div>
+                        </div>
+                        <strong class="text-sm text-gray-900">R$ ${parseFloat(frete.custom_price || frete.price || 0).toFixed(2).replace('.', ',')}</strong>
+                      </div>
+                    `).join('');
+                        }
+
+                        // Mostra serviços com erro
+                        if (erros.length > 0) {
+                            html += `
+                      <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                        <p class="text-sm font-medium text-yellow-700 mb-1">⚠️ Serviços indisponíveis:</p>
+                        <ul class="text-sm text-yellow-700 list-disc ml-5">
+                          ${erros.map(e => `
+                                        <li>${e.company?.name || 'Transportadora'} - ${e.name || 'Serviço'}: ${e.error}</li>
+                                      `).join('')}
+                        </ul>
+                      </div>
+                    `;
+                        }
+
+                        div.innerHTML = html || `<p class="text-sm text-gray-600 mt-2">Nenhum frete disponível no momento.</p>`;
+                    } catch (err) {
+                        console.error(err);
+                        div.innerHTML =
+                            `<p class="text-sm text-red-600 mt-2">❌ Erro ao consultar o frete. Tente novamente mais tarde.</p>`;
+                    }
+                }
+            </script>
+
+
 
             <!-- Produtos Relacionados -->
             @if ($relatedProducts->count() > 0)
