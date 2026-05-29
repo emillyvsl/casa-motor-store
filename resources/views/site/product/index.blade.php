@@ -277,7 +277,7 @@
                                                             stroke-width="2"
                                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg>
-                                                    <span>Sob encomenda</span>
+                                                    <span>Sob encomenda · {{ max((int) $product->backorder_delivery_days, 0) }} dias</span>
                                                 @else
                                                     <svg class="w-4 h-4 text-red-500 mr-1" fill="none"
                                                         stroke="currentColor" viewBox="0 0 24 24">
@@ -305,12 +305,16 @@
 
                                         <!-- Botão de Comprar -->
                                         <div class="mt-4">
-
                                             @if ($product->stock > 0 || $product->allow_out_of_stock_sales)
-                                                <button
-                                                    class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold py-2.5 px-4 rounded-xl hover:from-orange-600 hover:to-amber-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5">
-                                                    Adicionar ao Carrinho
-                                                </button>
+                                                <form action="{{ route('site.cart.add') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <input type="hidden" name="quantity" value="1">
+                                                    <button type="submit"
+                                                        class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold py-2.5 px-4 rounded-xl hover:from-orange-600 hover:to-amber-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5">
+                                                        Adicionar ao Carrinho
+                                                    </button>
+                                                </form>
                                             @else
                                                 <button
                                                     class="w-full bg-gray-300 text-gray-600 font-semibold py-2.5 px-4 rounded-xl cursor-not-allowed"

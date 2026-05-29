@@ -134,31 +134,17 @@
                     <div class="mt-3 flex items-center">
                         <div class="flex items-center">
                             @for ($i = 1; $i <= 5; $i++)
-                                @if (isset($ratingStats) && $ratingStats['total'] > 0)
-                                    <div class="mt-3 flex items-center">
-                                        <div class="flex items-center">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= floor($ratingStats['average']))
-                                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor"
-                                                        viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.972a1 1 0 00.95.69h4.174c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.286 3.972c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.286-3.972a1 1 0 00-.364-1.118L2.05 9.399c-.783-.57-.38-1.81.588-1.81h4.174a1 1 0 00.95-.69l1.286-3.972z" />
-                                                    </svg>
-                                                @else
-                                                    <svg class="w-5 h-5 text-gray-300" fill="currentColor"
-                                                        viewBox="0 0 20 20">
-                                                        <path
-                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.972a1 1 0 00.95.69h4.174c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.286 3.972c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.286-3.972a1 1 0 00-.364-1.118L2.05 9.399c-.783-.57-.38-1.81.588-1.81h4.174a1 1 0 00.95-.69l1.286-3.972z" />
-                                                    </svg>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        <span class="ml-2 text-sm text-gray-600">
-                                            {{ $ratingStats['average'] }}/5 ({{ $ratingStats['total'] }} avaliações)
-                                        </span>
-                                    </div>
+                                @if ($i <= floor($ratingStats['average']))
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.972a1 1 0 00.95.69h4.174c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.286 3.972c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.286-3.972a1 1 0 00-.364-1.118L2.05 9.399c-.783-.57-.38-1.81.588-1.81h4.174a1 1 0 00.95-.69l1.286-3.972z" />
+                                    </svg>
+                                @else
+                                    <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.972a1 1 0 00.95.69h4.174c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.286 3.972c.3.921-.755 1.688-1.54 1.118l-3.38-2.455a1 1 0 00-1.175 0l-3.38 2.455c-.784.57-1.838-.197-1.54-1.118l1.286-3.972a1 1 0 00-.364-1.118L2.05 9.399c-.783-.57-.38-1.81.588-1.81h4.174a1 1 0 00.95-.69l1.286-3.972z" />
+                                    </svg>
                                 @endif
-
                             @endfor
                         </div>
                         <p class="ml-2 text-sm text-gray-900">{{ number_format($ratingStats['average'], 1) }}</p>
@@ -203,7 +189,7 @@
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <span class="font-medium">Sob encomenda - Entrega em
-                                    {{ $product->backorder_delivery_days }} dias</span>
+                                    {{ max((int) $product->backorder_delivery_days, 0) }} dias úteis</span>
                             </div>
                         @else
                             <div class="flex items-center text-red-600">
@@ -213,6 +199,10 @@
                                 </svg>
                                 <span class="font-medium">Produto esgotado</span>
                             </div>
+                        @endif
+
+                        @if ($product->allow_out_of_stock_sales && $product->out_of_stock_message)
+                            <p class="mt-2 text-sm text-orange-700">{{ $product->out_of_stock_message }}</p>
                         @endif
                     </div>
 
@@ -285,9 +275,9 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        @if ($shipping->price > 0)
+                                        @if ($shipping->shipping_cost > 0)
                                             <span class="text-sm font-medium text-gray-900">R$
-                                                {{ number_format($shipping->price, 2, ',', '.') }}</span>
+                                                {{ number_format($shipping->shipping_cost, 2, ',', '.') }}</span>
                                         @else
                                             <span class="text-sm font-medium text-green-600">Grátis</span>
                                         @endif
@@ -300,16 +290,27 @@
                     <!-- Botão de Compra -->
                     <div class="mt-10">
                         @if ($product->stock > 0 || $product->allow_out_of_stock_sales)
-                            <button
-                                class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold py-4 px-8 rounded-xl hover:from-orange-600 hover:to-amber-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg">
-                                <span class="flex items-center justify-center">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                    Adicionar ao Carrinho
-                                </span>
-                            </button>
+                            <form action="{{ route('site.cart.add') }}" method="POST" class="space-y-4">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                                <div>
+                                    <label for="quantity" class="block text-sm font-medium text-gray-900 mb-2">Quantidade</label>
+                                    <input id="quantity" name="quantity" type="number" min="1" value="1"
+                                        class="w-28 rounded-xl border-gray-300 focus:ring-orange-500 focus:border-orange-500">
+                                </div>
+
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold py-4 px-8 rounded-xl hover:from-orange-600 hover:to-amber-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 transform hover:-translate-y-0.5 shadow-lg">
+                                    <span class="flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        Adicionar ao Carrinho
+                                    </span>
+                                </button>
+                            </form>
                         @else
                             <button
                                 class="w-full bg-gray-300 text-gray-600 font-bold py-4 px-8 rounded-xl cursor-not-allowed"

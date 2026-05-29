@@ -73,6 +73,21 @@
                   </a>
               </li>
               <li>
+                  <a href="{{ route('admin.home-banners.index') }}"
+                      class="flex items-center p-2 rounded-lg transition duration-150
+                {{ request()->routeIs('admin.home-banners.*') ? 'bg-orange-100 text-white dark:bg-orange-600' : 'text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700' }}">
+                      <i class="w-6 h-6 flex items-center justify-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+                              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M3.75 6.75h16.5m-16.5 10.5h16.5m-16.5-7.5h16.5M6 20.25l3.264-3.264a1.5 1.5 0 012.121 0L15 20.25m-7.5-9 1.314-1.314a1.5 1.5 0 012.121 0l5.814 5.814m1.5-8.25a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
+                          </svg>
+                      </i>
+
+                      <span class="ms-3">Banners</span>
+                  </a>
+              </li>
+              <li>
                   <a href="{{ route('admin.shipping-profiles.index') }}"
                       class="flex items-center p-2 rounded-lg transition duration-150
               {{ request()->routeIs('admin.shipping-profiles.*')

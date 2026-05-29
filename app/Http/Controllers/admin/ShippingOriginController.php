@@ -24,11 +24,23 @@ class ShippingOriginController extends Controller
     {
         $data = $request->validate([
             'name' => ['required','string','max:255'],
-            'cep' => ['required','string','max:9'],
+            'cep' => ['required','string'],
             'address' => ['required','string','max:255'],
             'city' => ['required','string','max:120'],
             'state' => ['required','string','max:2'],
         ]);
+
+        // Sanitizar CEP: remover tudo que não é dígito
+        $cepLimpo = preg_replace('/\D/', '', $data['cep']);
+
+        // Validar que tem exatamente 8 dígitos
+        if (strlen($cepLimpo) !== 8) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['cep' => 'O CEP deve conter exatamente 8 dígitos.']);
+        }
+
+        $data['cep'] = $cepLimpo;
         ShippingOrigin::create($data);
         return redirect()->route('admin.shipping-origins.index')->with('success','Origem criada!');
     }
@@ -42,11 +54,23 @@ class ShippingOriginController extends Controller
     {
         $data = $request->validate([
             'name' => ['required','string','max:255'],
-            'cep' => ['required','string','max:9'],
+            'cep' => ['required','string'],
             'address' => ['required','string','max:255'],
             'city' => ['required','string','max:120'],
             'state' => ['required','string','max:2'],
         ]);
+
+        // Sanitizar CEP: remover tudo que não é dígito
+        $cepLimpo = preg_replace('/\D/', '', $data['cep']);
+
+        // Validar que tem exatamente 8 dígitos
+        if (strlen($cepLimpo) !== 8) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['cep' => 'O CEP deve conter exatamente 8 dígitos.']);
+        }
+
+        $data['cep'] = $cepLimpo;
         $shipping_origin->update($data);
         return redirect()->route('admin.shipping-origins.index')->with('success','Origem atualizada!');
     }

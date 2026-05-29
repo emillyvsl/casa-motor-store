@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+
+class HomeBanner extends Model
+{
+    protected $fillable = [
+        'name',
+        'badge',
+        'title',
+        'subtitle',
+        'description',
+        'primary_button_text',
+        'primary_button_url',
+        'secondary_button_text',
+        'secondary_button_url',
+        'image_path',
+        'image_alt',
+        'sort_order',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'sort_order' => 'integer',
+        'is_active' => 'boolean',
+    ];
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+}

@@ -21,4 +21,19 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function addresses()
+    {
+        return $this->hasMany(Addresses::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Orders::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasOne(Carts::class);
+    }
 }
